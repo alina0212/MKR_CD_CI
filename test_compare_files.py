@@ -1,6 +1,6 @@
 import pytest
 import os
-from main import compare_files
+from main import compare_files, read_file, write_to_file
 
 
 @pytest.fixture
@@ -21,3 +21,13 @@ def test_compare_files(create_test_files):
     same_lines, diff_lines = compare_files(file1_path, file2_path)
     assert same_lines == {"line2\n", "line3\n"}
     assert diff_lines == {"line1\n", "line4\n"}
+
+
+@pytest.fixture
+def create_test_file():
+    file_path = "test_file.txt"
+    with open(file_path, 'w') as file:
+        file.write("line1\nline2\nline3\n")
+    yield file_path
+    os.remove(file_path)
+
